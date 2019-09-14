@@ -5,7 +5,7 @@ The blacklist client package for connecting to the Blacklist Server.
 ![blacklist client](https://user-images.githubusercontent.com/10347617/64910390-93ca2500-d71e-11e9-8885-a1682298b78f.png)
 
 <p align="center">
-    <a href="https://styleci.io/repos/75637284"><img src="https://styleci.io/repos/75637284/shield" alt="StyleCI" /></a>
+    <a href="https://styleci.io/repos/206815468"><img src="https://styleci.io/repos/206815468/shield" alt="StyleCI" /></a>
     <a href="https://packagist.org/packages/andrey-helldar/blacklist-client"><img src="https://img.shields.io/packagist/dt/andrey-helldar/blacklist-client.svg?style=flat-square" alt="Total Downloads" /></a>
     <a href="https://packagist.org/packages/andrey-helldar/blacklist-client"><img src="https://poser.pugx.org/andrey-helldar/blacklist-client/v/stable?format=flat-square" alt="Latest Stable Version" /></a>
     <a href="https://packagist.org/packages/andrey-helldar/blacklist-client"><img src="https://poser.pugx.org/andrey-helldar/blacklist-client/v/unstable?format=flat-square" alt="Latest Unstable Version" /></a>
