@@ -45,6 +45,6 @@ return [
      */
     'headers' => [
         // 'Content-Type" => 'application/json'
-    ]
+    ],
 
 ];

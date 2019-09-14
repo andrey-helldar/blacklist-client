@@ -34,9 +34,9 @@ class RemoteService extends BaseService implements Service
     private function send(string $method, array $data): ResponseInterface
     {
         $base_uri = \config('blacklist_client.server_url') ?: Server::BASE_URL;
-        $timeout = \config('blacklist_client.server_timeout') ?: 0;
-        $verify = \config('blacklist_client.verify_ssl') ?: true;
-        $headers = \config('blacklist_client.headers') ?: [];
+        $timeout  = \config('blacklist_client.server_timeout') ?: 0;
+        $verify   = \config('blacklist_client.verify_ssl') ?: true;
+        $headers  = \config('blacklist_client.headers') ?: [];
 
         return HttpClient::setBaseUri($base_uri)
             ->setTimeout($timeout)
