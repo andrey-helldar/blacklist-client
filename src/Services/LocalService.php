@@ -2,60 +2,37 @@
 
 namespace Helldar\BlacklistClient\Services;
 
-use Helldar\BlacklistClient\Contracts\Service;
+use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Exceptions\UnknownTypeException;
-use Helldar\BlacklistServer\Facades\Email;
-use Helldar\BlacklistServer\Facades\Host;
-use Helldar\BlacklistServer\Facades\Ip;
-use Helldar\BlacklistServer\Facades\Phone;
+use Helldar\BlacklistServer\Facades\Blacklist;
 use Illuminate\Support\Arr;
 
-class LocalService extends BaseService implements Service
+class LocalService extends BaseService implements ServiceContract
 {
-    private $facades = [
-        'email' => Email::class,
-        'host'  => Host::class,
-        'ip'    => Ip::class,
-        'phone' => Phone::class,
-    ];
-
-    /**
-     * @param string|null $value
-     * @param string|null $type
-     *
-     * @throws \Helldar\BlacklistCore\Exceptions\UnknownTypeException
-     *
-     * @return mixed
-     */
-    public function store(string $value = null, string $type = null)
+    public function store(string $type, string $value)
     {
         if ($this->isDisabled()) {
             return true;
         }
 
-        if ($facade = Arr::get($this->facades, $type)) {
-            return $facade->store($value);
-        }
-
-        throw new UnknownTypeException($type);
+        return Blacklist::store($type, $value);
     }
 
-    /**
-     * @param string|null $value
-     * @param string|null $type
-     *
-     * @return bool
-     */
-    public function exists(string $value = null, string $type = null): bool
+    public function check(string $value): bool
+    {
+        if ($this->isDisabled()) {
+            return true;
+        }
+
+        return Blacklist::check($value);
+    }
+
+    public function exists(string $value): bool
     {
         if ($this->isDisabled()) {
             return false;
         }
 
-        if ($facade = Arr::get($this->facades, $type)) {
-            return $facade::exists($value);
-        }
-
-        return false;
+        return Blacklist::exists($value);
     }
 }

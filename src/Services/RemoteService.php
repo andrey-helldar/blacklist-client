@@ -2,14 +2,14 @@
 
 namespace Helldar\BlacklistClient\Services;
 
-use Helldar\BlacklistClient\Contracts\Service;
 use Helldar\BlacklistCore\Constants\Server;
+use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Facades\HttpClient;
 use Psr\Http\Message\ResponseInterface;
 
-class RemoteService extends BaseService implements Service
+class RemoteService extends BaseService implements ServiceContract
 {
-    public function store(string $value = null, string $type = null)
+    public function store(string $type, string $value)
     {
         if ($this->isDisabled()) {
             return true;
@@ -20,7 +20,7 @@ class RemoteService extends BaseService implements Service
         return $response->getBody()->getContents();
     }
 
-    public function exists(string $value = null, string $type = null): bool
+    public function check(string $value = null, string $type = null): bool
     {
         if ($this->isDisabled()) {
             return false;
