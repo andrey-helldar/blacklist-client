@@ -3,9 +3,7 @@
 namespace Helldar\BlacklistClient\Services;
 
 use Helldar\BlacklistCore\Contracts\ServiceContract;
-use Helldar\BlacklistCore\Exceptions\UnknownTypeException;
 use Helldar\BlacklistServer\Facades\Blacklist;
-use Illuminate\Support\Arr;
 
 class LocalService extends BaseService implements ServiceContract
 {
