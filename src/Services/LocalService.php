@@ -14,8 +14,8 @@ class LocalService extends BaseService implements Service
 {
     private $facades = [
         'email' => Email::class,
-        'host' => Host::class,
-        'ip' => Ip::class,
+        'host'  => Host::class,
+        'ip'    => Ip::class,
         'phone' => Phone::class,
     ];
 
@@ -23,8 +23,9 @@ class LocalService extends BaseService implements Service
      * @param string|null $value
      * @param string|null $type
      *
-     * @return mixed
      * @throws \Helldar\BlacklistCore\Exceptions\UnknownTypeException
+     *
+     * @return mixed
      */
     public function store(string $value = null, string $type = null)
     {

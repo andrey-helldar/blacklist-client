@@ -2,7 +2,6 @@
 
 namespace Helldar\BlacklistClient;
 
-use function config;
 use function config_path;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
