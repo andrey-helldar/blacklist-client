@@ -5,29 +5,38 @@ namespace Helldar\BlacklistClient\Services;
 use Helldar\BlacklistClient\Contracts\Service;
 use Helldar\BlacklistCore\Constants\Server;
 use Helldar\BlacklistCore\Facades\HttpClient;
+use Psr\Http\Message\ResponseInterface;
 
-class RemoteService implements Service
+class RemoteService extends BaseService implements Service
 {
-    public function store(string $source = null, string $type = null)
+    public function store(string $value = null, string $type = null)
     {
-        $response = $this->send('POST', \compact('type', 'source'));
+        if ($this->isDisabled()) {
+            return true;
+        }
+
+        $response = $this->send('POST', \compact('type', 'value'));
 
         return $response->getBody()->getContents();
     }
 
-    public function check(string $source = null, string $type = null): bool
+    public function exists(string $value = null, string $type = null): bool
     {
-        $response = $this->send('GET', \compact('type', 'source'));
+        if ($this->isDisabled()) {
+            return false;
+        }
 
-        return $response->getBody()->getContents();
+        $response = $this->send('GET', \compact('type', 'value'));
+
+        return $response->getStatusCode() !== 200;
     }
 
-    private function send(string $method, array $data)
+    private function send(string $method, array $data): ResponseInterface
     {
-        $base_uri = \config('blacklist_client.server_url', Server::BASE_URL);
-        $timeout  = \config('blacklist_client.server_timeout', 0);
-        $verify   = \config('blacklist_client.verify_ssl', true);
-        $headers  = \config('blacklist_client.headers', true);
+        $base_uri = \config('blacklist_client.server_url') ?: Server::BASE_URL;
+        $timeout = \config('blacklist_client.server_timeout') ?: 0;
+        $verify = \config('blacklist_client.verify_ssl') ?: true;
+        $headers = \config('blacklist_client.headers') ?: [];
 
         return HttpClient::setBaseUri($base_uri)
             ->setTimeout($timeout)
