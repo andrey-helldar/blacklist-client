@@ -3,6 +3,13 @@
 return [
 
     /*
+     * Enabling and disabling the use of the package.
+     *
+     * If the use of the package is turned off, accessing it will
+     * always return a successful response, that is, a spammer was not found.
+     *
+     * There will also be no recording to the database - the facade will simply return "true".
+     *
      * Default, true
      */
 
@@ -32,5 +39,12 @@ return [
      */
 
     'verify_ssl' => false,
+
+    /*
+     * If cors is configured on your server or you need to transfer some specific headers, fill in this option.
+     */
+    'headers' => [
+        // 'Content-Type" => 'application/json'
+    ]
 
 ];
