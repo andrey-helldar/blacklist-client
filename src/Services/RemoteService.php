@@ -2,13 +2,13 @@
 
 namespace Helldar\BlacklistClient\Services;
 
-use Helldar\BlacklistCore\Constants\Server;
-use Helldar\BlacklistCore\Contracts\ServiceContract;
-use Helldar\BlacklistCore\Facades\HttpClient;
-use Psr\Http\Message\ResponseInterface;
-
 use function compact;
 use function config;
+use Helldar\BlacklistCore\Constants\Server;
+use Helldar\BlacklistCore\Contracts\ServiceContract;
+
+use Helldar\BlacklistCore\Facades\HttpClient;
+use Psr\Http\Message\ResponseInterface;
 
 class RemoteService extends BaseService implements ServiceContract
 {
