@@ -7,6 +7,9 @@ use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Facades\HttpClient;
 use Psr\Http\Message\ResponseInterface;
 
+use function compact;
+use function config;
+
 class RemoteService extends BaseService implements ServiceContract
 {
     public function store(string $type, string $value)
@@ -15,7 +18,7 @@ class RemoteService extends BaseService implements ServiceContract
             return true;
         }
 
-        $response = $this->send('POST', \compact('type', 'value'));
+        $response = $this->send('POST', compact('type', 'value'));
 
         return $response->getBody()->getContents();
     }
@@ -26,17 +29,17 @@ class RemoteService extends BaseService implements ServiceContract
             return false;
         }
 
-        $response = $this->send('GET', \compact('type', 'value'));
+        $response = $this->send('GET', compact('type', 'value'));
 
         return $response->getStatusCode() !== 200;
     }
 
     private function send(string $method, array $data): ResponseInterface
     {
-        $base_uri = \config('blacklist_client.server_url') ?: Server::BASE_URL;
-        $timeout  = \config('blacklist_client.server_timeout') ?: 0;
-        $verify   = \config('blacklist_client.verify_ssl') ?: true;
-        $headers  = \config('blacklist_client.headers') ?: [];
+        $base_uri = config('blacklist_client.server_url') ?: Server::BASE_URL;
+        $timeout  = config('blacklist_client.server_timeout') ?: 0;
+        $verify   = config('blacklist_client.verify_ssl') ?: true;
+        $headers  = config('blacklist_client.headers') ?: [];
 
         return HttpClient::setBaseUri($base_uri)
             ->setTimeout($timeout)
