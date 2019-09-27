@@ -38,13 +38,13 @@ return [
      * Default, true
      */
 
-    'verify_ssl' => false,
+    'verify_ssl' => true,
 
     /*
      * If cors is configured on your server or you need to transfer some specific headers, fill in this option.
      */
     'headers'    => [
-        // 'Content-Type" => 'application/json'
+        // 'Accept' => 'application/json',
     ],
 
 ];
