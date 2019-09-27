@@ -111,6 +111,15 @@ return Client::store('192.168.1.1', 'ip');
 return Client::store('+0 (000) 000-00-00', 'phone');
 ```
 
+For example:
+```php
+use Helldar\BlacklistClient\Facades\Client;
+
+$item = Client::store('foo@example.com', 'email');
+
+return $item->expired_at;
+```
+
 
 ## License
 
