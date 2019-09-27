@@ -23,12 +23,6 @@ class ExistsTest extends TestCase
     {
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(423);
-        $this->expectExceptionMessage(json_encode([
-            'error' => [
-                'code' => 423,
-                'msg'  => ["Checked {$this->exists} was found in our database."],
-            ],
-        ]));
 
         Client::store($this->exists, 'email');
 

@@ -31,14 +31,14 @@ class RemoteService extends BaseService implements ClientServiceContract
 
         $response = $this->send('POST', compact('value', 'type'));
 
-        if ($response->getStatusCode() == 200) {
-            return $this->decode($response);
+        $code = Arr::get($response, 'code');
+        $msg  = Arr::get($response, 'msg');
+
+        if ($code === 200) {
+            return $msg;
         }
 
-        throw new Exception(
-            $this->getError($response),
-            $response->getStatusCode() ?: 400
-        );
+        throw new Exception($msg, $code ?: 400);
     }
 
     /**
@@ -54,10 +54,11 @@ class RemoteService extends BaseService implements ClientServiceContract
 
         $response = $this->send('GET', compact('value'));
 
-        if ($response->getStatusCode() !== 200) {
-            throw new BlacklistDetectedException(
-                $this->getError($response)
-            );
+        $code = Arr::get($response, 'code');
+        $msg  = Arr::get($response, 'msg');
+
+        if ($code !== 200) {
+            throw new BlacklistDetectedException($msg);
         }
     }
 
@@ -69,32 +70,35 @@ class RemoteService extends BaseService implements ClientServiceContract
 
         $response = $this->send('GET', compact('value'), '/exists');
 
-        return $response->getStatusCode() !== 200;
+        $code = Arr::get($response, 'code');
+
+        return $code !== 200;
     }
 
-    private function send(string $method, array $data, string $url_suffix = null): ResponseInterface
+    private function send(string $method, array $data, string $url_suffix = null): array
     {
         $base_uri = config('blacklist_client.server_url') ?: Server::BASE_URL;
         $timeout  = config('blacklist_client.server_timeout') ?: 0;
         $verify   = config('blacklist_client.verify_ssl') ?: true;
         $headers  = config('blacklist_client.headers') ?: [];
 
-        return HttpClient::setBaseUri($base_uri)
+        /** @var ResponseInterface $response */
+        $response = HttpClient::setBaseUri($base_uri)
             ->setUriSuffix($url_suffix)
             ->setTimeout($timeout)
             ->setVerify($verify)
             ->setHeaders($headers)
             ->send($method, $data);
+
+        return [
+            'code' => $response->getStatusCode(),
+            'msg'  => json_decode($response->getBody()->getContents()),
+        ];
     }
 
-    private function decode(ResponseInterface $response)
+    private function getError(array $msg): string
     {
-        return json_decode($response->getBody()->getContents());
-    }
-
-    private function getError(ResponseInterface $response): string
-    {
-        $errors = Arr::dot($this->decode($response), 'error.msg');
+        $errors = Arr::dot($msg, 'error.msg');
 
         return Arr::first($errors);
     }

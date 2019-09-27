@@ -2,6 +2,7 @@
 
 namespace Tests\RemoteTests;
 
+use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
 use Helldar\BlacklistCore\Constants\Server;
@@ -24,11 +25,17 @@ class StoreTest extends TestCase
         $this->assertEquals($this->exists, $item->value);
     }
 
-    public function testFailValidationException()
+    public function testArgumentCountError()
     {
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('{"error":{"code":400,"msg":["The type must be one of email, host, phone or ip, null given."]}}');
+
+        Client::store($this->exists, 'foo');
+    }
+
+    public function testFailValidationException()
+    {
+        $this->expectException(ArgumentCountError::class);
 
         Client::store($this->exists);
     }
@@ -37,7 +44,6 @@ class StoreTest extends TestCase
     {
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('{"error":{"code":400,"msg":["The type must be one of email, host, phone or ip, null given."]}}');
 
         Client::store('', '');
     }

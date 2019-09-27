@@ -22,15 +22,8 @@ class CheckTest extends TestCase
     {
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(423);
-        $this->expectExceptionMessage(json_encode([
-            'error' => [
-                'code' => 423,
-                'msg'  => ["Checked {$this->exists} was found in our database."],
-            ],
-        ]));
 
         Client::store($this->exists, 'email');
-
         Client::check($this->exists);
     }
 
@@ -53,7 +46,7 @@ class CheckTest extends TestCase
     public function testEmptySource()
     {
         $this->expectException(ClientException::class);
-        $this->expectExceptionMessage('{"error":{"code":400,"msg":["The value field is required."]}}');
+        $this->expectExceptionMessage('{"error":{"code":400,"msg":["The value field is required."]},"request":{"value":null}}');
 
         Client::check('');
     }

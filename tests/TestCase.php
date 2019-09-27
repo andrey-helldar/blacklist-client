@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Helldar\BlacklistClient\ServiceProvider;
+use Helldar\BlacklistCore\Constants\Server;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -20,6 +21,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function getEnvironmentSetUp($app)
     {
         $this->setDatabase($app);
+        $this->setSettings($app);
     }
 
     protected function getPackageProviders($app)
@@ -29,8 +31,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     private function setDatabase($app)
     {
-        $app['config']->set('blacklist_client.server_url', 'http://localhost');
-
         $app['config']->set('database.default', $this->database);
 
         $app['config']->set('database.connections.' . $this->database, [
@@ -38,5 +38,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+    }
+
+    private function setSettings($app)
+    {
+        $app['config']->set('blacklist_client.server_url', Server::BASE_URL);
+        $app['config']->set('blacklist_client.verify_ssl', false);
     }
 }
