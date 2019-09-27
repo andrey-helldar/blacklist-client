@@ -2,13 +2,13 @@
 
 namespace Helldar\BlacklistClient\Services;
 
+use function compact;
 use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Facades\Validator;
 use Helldar\BlacklistServer\Facades\Blacklist;
 use Helldar\BlacklistServer\Models\Blacklist as BlacklistModel;
-use Illuminate\Http\Request;
 
-use function compact;
+use Illuminate\Http\Request;
 
 class LocalService extends BaseService implements ServiceContract
 {

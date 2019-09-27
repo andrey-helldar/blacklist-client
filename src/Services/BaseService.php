@@ -13,6 +13,6 @@ abstract class BaseService
 
     protected function isDisabled(): bool
     {
-        return ! $this->isEnabled();
+        return !$this->isEnabled();
     }
 }
