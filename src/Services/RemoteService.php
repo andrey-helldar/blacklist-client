@@ -40,17 +40,17 @@ class RemoteService extends BaseService implements ServiceContract
     }
 
     /**
-     * @param array $data
+     * @param string $value
      *
      * @throws \Helldar\BlacklistCore\Exceptions\BlacklistDetectedException
      */
-    public function check(array $data)
+    public function check(string $value)
     {
         if ($this->isDisabled()) {
             return;
         }
 
-        $response = $this->send('GET', $data);
+        $response = $this->send('GET', compact('value'));
 
         if ($response->getStatusCode() !== 200) {
             throw new BlacklistDetectedException(
