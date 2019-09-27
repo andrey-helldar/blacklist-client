@@ -21,6 +21,7 @@ class RemoteService extends BaseService implements ClientServiceContract
      *
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @return mixed|null
      */
     public function store(string $value, string $type)
@@ -67,6 +68,7 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param string $value
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @return bool
      */
     public function exists(string $value): bool
@@ -88,6 +90,7 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param string|null $url_suffix
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     *
      * @return array
      */
     private function send(string $method, array $data, string $url_suffix = null): array
