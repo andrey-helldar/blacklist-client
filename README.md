@@ -61,10 +61,15 @@ To check the existence of a spammer in the database, you need to transfer the da
 
 use Helldar\BlacklistClient\Facades\Client;
 
-return Client::exists('foo@example.com', 'email'); // true
-return Client::exists('http://example.com', 'host'); // false
-return Client::exists('192.168.1.1', 'ip'); // false
-return Client::exists('+0 (000) 000-00-00', 'phone'); // false
+return Client::check('http://example.com'); // false
+return Client::check('192.168.1.1'); // false
+return Client::check('+0 (000) 000-00-00'); // false
+
+return Client::check('foo@example.com');
+/* GuzzleHttp\Exception\ClientException with 423 code and content:
+ *
+ * {"error":{"code":400,"msg":["Checked foo@example.com was found in our database.]}}
+ */
 ```
 
 ### store
