@@ -49,7 +49,7 @@ php artisan vendor:publish --provider="Helldar\BlacklistClient\ServiceProvider"
 
 First look at the [config](src/config/settings.php).
 
-### exists
+### check / exists
 
 To check the existence of a spammer in the database, you need to transfer the data type and value:
 ```php
@@ -70,6 +70,30 @@ return Client::check('foo@example.com');
  *
  * {"error":{"code":400,"msg":["Checked foo@example.com was found in our database.]}}
  */
+```
+
+For example:
+```php
+use GuzzleHttp\Exception\ClientException;
+use Helldar\BlacklistClient\Facades\Client;
+
+class Foo
+{
+    public function store(array $data) {
+        if (! $this->isSpammer($data['email'])) {
+            // storing data
+        }
+    }
+
+    private function isSpammer(string $value): bool {
+        try {
+            return Client::check($value);
+        }
+        catch (ClientException $exception) {
+            return true;
+        }
+    }
+}
 ```
 
 ### store
