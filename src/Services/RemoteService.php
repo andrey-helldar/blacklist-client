@@ -2,33 +2,33 @@
 
 namespace Helldar\BlacklistClient\Services;
 
-use function compact;
-use function config;
 use Exception;
 use Helldar\BlacklistCore\Constants\Server;
-use Helldar\BlacklistCore\Contracts\ServiceContract;
+use Helldar\BlacklistCore\Contracts\ClientServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
-
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 
-class RemoteService extends BaseService implements ServiceContract
+use function compact;
+use function config;
+
+class RemoteService extends BaseService implements ClientServiceContract
 {
     /**
-     * @param array $data
+     * @param string $value
+     * @param string $type
      *
-     * @throws \Exception
-     *
+     * @throws Exception
      * @return mixed|null
      */
-    public function store(array $data)
+    public function store(string $value, string $type)
     {
         if ($this->isDisabled()) {
             return null;
         }
 
-        $response = $this->send('POST', $data);
+        $response = $this->send('POST', compact('value', 'type'));
 
         if ($response->getStatusCode() == 200) {
             return $this->decode($response);

@@ -19,10 +19,7 @@ class StoreTest extends TestCase
 
     public function testSuccess()
     {
-        $item = Client::store([
-            'type'  => 'email',
-            'value' => $this->exists,
-        ]);
+        $item = Client::store($this->exists, 'email');
 
         $this->assertEquals($this->exists, $item->value);
     }
@@ -33,9 +30,7 @@ class StoreTest extends TestCase
         $this->expectExceptionCode(400);
         $this->expectExceptionMessage('{"error":{"code":400,"msg":["The type must be one of email, host, phone or ip, null given."]}}');
 
-        Client::store([
-            'value' => $this->exists,
-        ]);
+        Client::store($this->exists);
     }
 
     public function testFailEmptySource()
@@ -44,6 +39,6 @@ class StoreTest extends TestCase
         $this->expectExceptionCode(400);
         $this->expectExceptionMessage('{"error":{"code":400,"msg":["The type must be one of email, host, phone or ip, null given."]}}');
 
-        Client::store([]);
+        Client::store('', '');
     }
 }

@@ -30,20 +30,14 @@ class ExistsTest extends TestCase
             ],
         ]));
 
-        Client::store([
-            'type'  => 'email',
-            'value' => $this->exists,
-        ]);
+        Client::store($this->exists, 'email');
 
         Client::exists($this->exists);
     }
 
     public function testSuccessNotExists()
     {
-        Client::store([
-            'type'  => 'email',
-            'value' => $this->exists,
-        ]);
+        Client::store($this->exists, 'email');
 
         $result = Client::exists($this->not_exists);
 
