@@ -6,8 +6,13 @@ use function config;
 
 abstract class BaseService
 {
-    protected function isDisabled(): bool
+    protected function isEnabled(): bool
     {
         return config('blacklist_client.enabled', true);
+    }
+
+    protected function isDisabled(): bool
+    {
+        return ! $this->isEnabled();
     }
 }

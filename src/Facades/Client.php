@@ -2,11 +2,11 @@
 
 namespace Helldar\BlacklistClient\Facades;
 
-use function config;
 use Helldar\BlacklistClient\Services\LocalService;
 use Helldar\BlacklistClient\Services\RemoteService;
-
 use Illuminate\Support\Facades\Facade;
+
+use function config;
 
 class Client extends Facade
 {
