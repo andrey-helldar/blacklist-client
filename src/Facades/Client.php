@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
 use function config;
 
 /**
- * @method string|array store(string $value, string $type)
+ * @method array|string store(string $value, string $type)
  * @method void check(string $value)
  * @method bool exists(string $value)
  */
