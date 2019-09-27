@@ -79,13 +79,15 @@ use Helldar\BlacklistClient\Facades\Client;
 
 class Foo
 {
-    public function store(array $data) {
+    public function store(array $data)
+    {
         if (! $this->isSpammer($data['email'])) {
             // storing data
         }
     }
 
-    private function isSpammer(string $value): bool {
+    private function isSpammer(string $value): bool
+    {
         try {
             return Client::check($value);
         }
