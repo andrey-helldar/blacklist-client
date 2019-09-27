@@ -19,8 +19,8 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param string $value
      * @param string $type
      *
-     * @throws Exception
-     *
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @return mixed|null
      */
     public function store(string $value, string $type)
@@ -44,7 +44,8 @@ class RemoteService extends BaseService implements ClientServiceContract
     /**
      * @param string $value
      *
-     * @throws \Helldar\BlacklistCore\Exceptions\BlacklistDetectedException
+     * @throws BlacklistDetectedException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function check(string $value)
     {
@@ -62,6 +63,12 @@ class RemoteService extends BaseService implements ClientServiceContract
         }
     }
 
+    /**
+     * @param string $value
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return bool
+     */
     public function exists(string $value): bool
     {
         if ($this->isDisabled()) {
@@ -75,6 +82,14 @@ class RemoteService extends BaseService implements ClientServiceContract
         return $code !== 200;
     }
 
+    /**
+     * @param string $method
+     * @param array $data
+     * @param string|null $url_suffix
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return array
+     */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
         $base_uri = config('blacklist_client.server_url') ?: Server::BASE_URL;
@@ -94,12 +109,5 @@ class RemoteService extends BaseService implements ClientServiceContract
             'code' => $response->getStatusCode(),
             'msg'  => json_decode($response->getBody()->getContents()),
         ];
-    }
-
-    private function getError(array $msg): string
-    {
-        $errors = Arr::dot($msg, 'error.msg');
-
-        return Arr::first($errors);
     }
 }

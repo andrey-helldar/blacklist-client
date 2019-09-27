@@ -31,9 +31,9 @@ class CheckTest extends TestCase
     {
         Client::store($this->exists, 'email');
 
-        $result = Client::check($this->not_exists);
+        Client::check($this->not_exists);
 
-        $this->assertEquals(false, $result);
+        $this->assertEquals(true, true);
     }
 
     public function testArgumentCountError()
