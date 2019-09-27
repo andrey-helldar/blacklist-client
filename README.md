@@ -117,7 +117,7 @@ use Helldar\BlacklistClient\Facades\Client;
 
 $item = Client::store('foo@example.com', 'email');
 
-return $item->expired_at;
+return $item->expired_at; // 2019-09-27 23:25:27
 ```
 
 
