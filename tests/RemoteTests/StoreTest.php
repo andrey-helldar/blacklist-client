@@ -6,7 +6,6 @@ use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
 use Helldar\BlacklistCore\Constants\Server;
-use Helldar\BlacklistCore\Exceptions\SelfBlockingDetected;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
