@@ -106,7 +106,7 @@ To storing a spammer to the database, use the method `store` of the facade `Clie
 use Helldar\BlacklistClient\Facades\Client;
 
 return Client::store('foo@example.com', 'email');
-return Client::store('http://example.com', 'host');
+return Client::store('http://example.com', 'url');
 return Client::store('192.168.1.1', 'ip');
 return Client::store('+0 (000) 000-00-00', 'phone');
 ```

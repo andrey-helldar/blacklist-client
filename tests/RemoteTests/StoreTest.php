@@ -56,11 +56,11 @@ class StoreTest extends TestCase
         Client::store('127.0.0.1', 'ip');
     }
 
-    public function testSelfBlockingHost()
+    public function testSelfBlockingUrl()
     {
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(400);
 
-        Client::store('http://localhost', 'host');
+        Client::store('http://localhost', 'url');
     }
 }
