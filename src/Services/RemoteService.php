@@ -7,6 +7,7 @@ use Helldar\BlacklistCore\Constants\Server;
 use Helldar\BlacklistCore\Contracts\ClientServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
+use Helldar\BlacklistCore\Traits\Validator;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 
@@ -15,20 +16,24 @@ use function config;
 
 class RemoteService extends BaseService implements ClientServiceContract
 {
+    use Validator;
+
     /**
      * @param string $value
      * @param string $type
      *
-     * @throws \Exception
+     * @return mixed|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return mixed|null
+     * @throws \Exception
      */
     public function store(string $value, string $type)
     {
         if ($this->isDisabled()) {
             return null;
         }
+
+        $this->validate(compact('value', 'type'));
 
         $response = $this->send('POST', compact('value', 'type'));
 
@@ -54,6 +59,8 @@ class RemoteService extends BaseService implements ClientServiceContract
             return;
         }
 
+        $this->validate(compact('value'), false);
+
         $response = $this->send('GET', compact('value'));
 
         $code = Arr::get($response, 'code');
@@ -67,15 +74,17 @@ class RemoteService extends BaseService implements ClientServiceContract
     /**
      * @param string $value
      *
+     * @return bool
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return bool
      */
     public function exists(string $value): bool
     {
         if ($this->isDisabled()) {
             return false;
         }
+
+        $this->validate(compact('value'), false);
 
         $response = $this->send('GET', compact('value'), '/exists');
 
@@ -89,9 +98,9 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param array $data
      * @param string|null $url_suffix
      *
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return array
      */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
