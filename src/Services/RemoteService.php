@@ -22,8 +22,8 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param string $value
      * @param string $type
      *
-     * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      *
      * @return mixed|null
      */
@@ -106,8 +106,8 @@ class RemoteService extends BaseService implements ClientServiceContract
     {
         $base_uri = config('blacklist_client.server_url') ?: Server::BASE_URL;
         $timeout  = config('blacklist_client.server_timeout') ?: 0;
+        $verify   = config('blacklist_client.verify_ssl') ?: false;
         $headers  = config('blacklist_client.headers') ?: [];
-        $verify   = $this->verifySSL();
 
         /** @var ResponseInterface $response */
         $response = HttpClient::setBaseUri($base_uri)
@@ -121,23 +121,5 @@ class RemoteService extends BaseService implements ClientServiceContract
             'code' => $response->getStatusCode(),
             'msg'  => json_decode($response->getBody()->getContents()),
         ];
-    }
-
-    private function verifySSL()
-    {
-        try {
-            $cacert = 'https://curl.haxx.se/ca/cacert.pem';
-            $path   = __DIR__ . '/cacert.pem.txt';
-
-            if (! file_exists($path)) {
-                $content = file_get_contents($cacert);
-
-                file_put_contents($path, $content);
-            }
-
-            return $path;
-        } catch (Exception $exception) {
-            return false;
-        }
     }
 }

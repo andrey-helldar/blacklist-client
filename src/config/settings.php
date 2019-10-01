@@ -33,6 +33,12 @@ return [
     'server_timeout' => 0,
 
     /*
+     * Default, false
+     */
+
+    'verify_ssl' => false,
+
+    /*
      * If cors is configured on your server or you need to transfer some specific headers, fill in this option.
      */
     'headers'    => [
