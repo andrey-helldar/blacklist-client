@@ -22,10 +22,10 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param string $value
      * @param string $type
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return mixed|null
      * @throws \Exception
      *
-     * @return mixed|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function store(string $value, string $type)
     {
@@ -74,9 +74,9 @@ class RemoteService extends BaseService implements ClientServiceContract
     /**
      * @param string $value
      *
+     * @return bool
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return bool
      */
     public function exists(string $value): bool
     {
@@ -98,16 +98,16 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param array $data
      * @param string|null $url_suffix
      *
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return array
      */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
         $base_uri = config('blacklist_client.server_url') ?: Server::BASE_URL;
         $timeout  = config('blacklist_client.server_timeout') ?: 0;
-        $verify   = config('blacklist_client.verify_ssl') ?: true;
         $headers  = config('blacklist_client.headers') ?: [];
+        $verify   = $this->verifySSL();
 
         /** @var ResponseInterface $response */
         $response = HttpClient::setBaseUri($base_uri)
@@ -121,5 +121,24 @@ class RemoteService extends BaseService implements ClientServiceContract
             'code' => $response->getStatusCode(),
             'msg'  => json_decode($response->getBody()->getContents()),
         ];
+    }
+
+    private function verifySSL()
+    {
+        try {
+            $cacert = 'https://curl.haxx.se/ca/cacert.pem';
+            $path   = __DIR__ . '/cacert.pem.txt';
+
+            if (! file_exists($path)) {
+                $content = file_get_contents($cacert);
+
+                file_put_contents($path, $content);
+            }
+
+            return $path;
+        }
+        catch (Exception $exception) {
+            return false;
+        }
     }
 }

@@ -33,14 +33,6 @@ return [
     'server_timeout' => 0,
 
     /*
-     * If you using Let's Encrypt certificates, then set this value to "false".
-     *
-     * Default, true
-     */
-
-    'verify_ssl' => true,
-
-    /*
      * If cors is configured on your server or you need to transfer some specific headers, fill in this option.
      */
     'headers'    => [
