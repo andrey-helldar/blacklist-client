@@ -3,28 +3,26 @@
 namespace Helldar\BlacklistClient\Services;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Helldar\BlacklistClient\Facades\Config;
+use Helldar\BlacklistClient\Facades\Validation;
 use Helldar\BlacklistCore\Constants\Server;
 use Helldar\BlacklistCore\Contracts\ClientServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
-use Helldar\BlacklistCore\Traits\Validator;
-use Illuminate\Support\Arr;
+use Helldar\BlacklistCore\Helpers\Arr;
 use Psr\Http\Message\ResponseInterface;
 
 use function compact;
-use function config;
 
-class RemoteService extends BaseService implements ClientServiceContract
+class ClientService implements ClientServiceContract
 {
-    use Validator;
-
     /**
      * @param string $value
      * @param string $type
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
-     *
+     * @throws GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      * @return mixed|null
      */
     public function store(string $value, string $type)
@@ -49,19 +47,21 @@ class RemoteService extends BaseService implements ClientServiceContract
 
     /**
      * @param string $value
+     * @param string|null $type
      *
      * @throws BlacklistDetectedException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      */
-    public function check(string $value)
+    public function check(string $value, string $type = null)
     {
         if ($this->isDisabled()) {
             return;
         }
 
-        $this->validate(compact('value'), false);
+        $this->validate(compact('value', 'type'));
 
-        $response = $this->send('GET', compact('value'));
+        $response = $this->send('GET', compact('value', 'type'));
 
         $code = Arr::get($response, 'code');
         $msg  = Arr::get($response, 'msg');
@@ -73,20 +73,21 @@ class RemoteService extends BaseService implements ClientServiceContract
 
     /**
      * @param string $value
+     * @param string|null $type
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     *
+     * @throws GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      * @return bool
      */
-    public function exists(string $value): bool
+    public function exists(string $value, string $type = null): bool
     {
         if ($this->isDisabled()) {
             return false;
         }
 
-        $this->validate(compact('value'), false);
+        $this->validate(compact('value', 'type'));
 
-        $response = $this->send('GET', compact('value'), '/exists');
+        $response = $this->send('GET', compact('value', 'type'), '/exists');
 
         $code = Arr::get($response, 'code');
 
@@ -98,16 +99,16 @@ class RemoteService extends BaseService implements ClientServiceContract
      * @param array $data
      * @param string|null $url_suffix
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     *
+     * @throws GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      * @return array
      */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
-        $base_uri = config('blacklist_client.server_url') ?: Server::BASE_URL;
-        $timeout  = config('blacklist_client.server_timeout') ?: 0;
-        $verify   = config('blacklist_client.verify_ssl') ?: false;
-        $headers  = config('blacklist_client.headers') ?: [];
+        $base_uri = Config::get('server_url') ?: Server::BASE_URL;
+        $timeout  = Config::get('server_timeout') ?: 0;
+        $verify   = Config::get('verify_ssl') ?: false;
+        $headers  = Config::get('headers') ?: [];
 
         /** @var ResponseInterface $response */
         $response = HttpClient::setBaseUri($base_uri)
@@ -121,5 +122,15 @@ class RemoteService extends BaseService implements ClientServiceContract
             'code' => $response->getStatusCode(),
             'msg'  => json_decode($response->getBody()->getContents()),
         ];
+    }
+
+    private function isDisabled(): bool
+    {
+        return ! Config::get('enabled', true);
+    }
+
+    private function validate(array $data)
+    {
+        Validation::validate($data);
     }
 }
