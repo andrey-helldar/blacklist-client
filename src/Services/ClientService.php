@@ -23,6 +23,7 @@ class ClientService implements ClientServiceContract
      *
      * @throws GuzzleException
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
+     *
      * @return mixed|null
      */
     public function store(string $value, string $type)
@@ -77,6 +78,7 @@ class ClientService implements ClientServiceContract
      *
      * @throws GuzzleException
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
+     *
      * @return bool
      */
     public function exists(string $value, string $type = null): bool
@@ -101,6 +103,7 @@ class ClientService implements ClientServiceContract
      *
      * @throws GuzzleException
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
+     *
      * @return array
      */
     private function send(string $method, array $data, string $url_suffix = null): array
