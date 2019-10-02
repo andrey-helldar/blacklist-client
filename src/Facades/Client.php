@@ -12,7 +12,7 @@ use Helldar\BlacklistCore\Facades\Facade;
  */
 class Client extends Facade
 {
-    static function getFacadeAccessor()
+    public static function getFacadeAccessor()
     {
         return ClientService::class;
     }
