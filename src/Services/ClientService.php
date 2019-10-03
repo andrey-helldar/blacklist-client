@@ -21,10 +21,11 @@ class ClientService implements ServiceContract
      * @param string $value
      * @param string $type
      *
-     * @return mixed|null
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
+     *
+     * @return mixed|null
      */
     public function store(string $value, string $type)
     {
@@ -76,10 +77,10 @@ class ClientService implements ServiceContract
      * @param string $value
      * @param string|null $type
      *
-     * @return bool
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
-     *
      * @throws GuzzleException
+     *
+     * @return bool
      */
     public function exists(string $value, string $type = null): bool
     {
@@ -101,10 +102,10 @@ class ClientService implements ServiceContract
      * @param array $data
      * @param string|null $url_suffix
      *
-     * @return array
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
-     *
      * @throws GuzzleException
+     *
+     * @return array
      */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
