@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Helldar\BlacklistClient\Facades\Config;
 use Helldar\BlacklistClient\Facades\Validation;
 use Helldar\BlacklistCore\Constants\Server;
-use Helldar\BlacklistCore\Contracts\ClientServiceContract;
+use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
 use Helldar\BlacklistCore\Helpers\Arr;
@@ -15,16 +15,16 @@ use Psr\Http\Message\ResponseInterface;
 
 use function compact;
 
-class ClientService implements ClientServiceContract
+class ClientService implements ServiceContract
 {
     /**
      * @param string $value
      * @param string $type
      *
-     * @throws GuzzleException
-     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
-     *
      * @return mixed|null
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      */
     public function store(string $value, string $type)
     {
@@ -76,10 +76,10 @@ class ClientService implements ClientServiceContract
      * @param string $value
      * @param string|null $type
      *
-     * @throws GuzzleException
+     * @return bool
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      *
-     * @return bool
+     * @throws GuzzleException
      */
     public function exists(string $value, string $type = null): bool
     {
@@ -101,10 +101,10 @@ class ClientService implements ClientServiceContract
      * @param array $data
      * @param string|null $url_suffix
      *
-     * @throws GuzzleException
+     * @return array
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      *
-     * @return array
+     * @throws GuzzleException
      */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
