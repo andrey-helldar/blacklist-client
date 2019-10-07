@@ -31,13 +31,6 @@ class ExistsTest extends TestCase
         $this->assertEquals(false, $result);
     }
 
-    public function testArgumentCountError()
-    {
-        $this->expectException(ArgumentCountError::class);
-
-        Client::exists();
-    }
-
     public function testEmptySource()
     {
         $this->expectException(TypeError::class);
