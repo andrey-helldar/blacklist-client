@@ -2,7 +2,6 @@
 
 namespace Tests\FacadeTests;
 
-use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
 use Tests\TestCase;

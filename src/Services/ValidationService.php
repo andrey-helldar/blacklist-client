@@ -30,9 +30,9 @@ class ValidationService
      * @param array $data
      * @param string $key
      *
-     * @return mixed
      * @throws UnknownValueException
      *
+     * @return mixed
      */
     private function valueOrFail(array $data, string $key)
     {
