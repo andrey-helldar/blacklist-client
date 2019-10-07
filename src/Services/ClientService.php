@@ -18,16 +18,16 @@ use function compact;
 class ClientService implements ServiceContract
 {
     /**
-     * @param string $value
-     * @param string $type
+     * @param string|null $value
+     * @param string|null $type
      *
-     * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
+     * @throws \Exception
      *
      * @return mixed|null
      */
-    public function store(string $value, string $type)
+    public function store(string $value = null, string $type = null)
     {
         if ($this->isDisabled()) {
             return null;
@@ -48,14 +48,14 @@ class ClientService implements ServiceContract
     }
 
     /**
-     * @param string $value
+     * @param string|null $value
      * @param string|null $type
      *
      * @throws BlacklistDetectedException
      * @throws GuzzleException
      * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      */
-    public function check(string $value, string $type = null)
+    public function check(string $value = null, string $type = null)
     {
         if ($this->isDisabled()) {
             return;
@@ -74,15 +74,15 @@ class ClientService implements ServiceContract
     }
 
     /**
-     * @param string $value
+     * @param string|null $value
      * @param string|null $type
      *
-     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      * @throws GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      *
      * @return bool
      */
-    public function exists(string $value, string $type = null): bool
+    public function exists(string $value = null, string $type = null): bool
     {
         if ($this->isDisabled()) {
             return false;
@@ -102,8 +102,8 @@ class ClientService implements ServiceContract
      * @param array $data
      * @param string|null $url_suffix
      *
-     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      * @throws GuzzleException
+     * @throws \Helldar\BlacklistCore\Exceptions\IncorrectValueException
      *
      * @return array
      */

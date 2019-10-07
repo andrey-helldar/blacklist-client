@@ -36,7 +36,7 @@ class ValidationService
      */
     private function valueOrFail(array $data, string $key)
     {
-        if (isset($data[$key])) {
+        if (isset($data[$key]) && $data[$key]) {
             return $data[$key];
         }
 

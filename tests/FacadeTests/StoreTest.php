@@ -2,9 +2,9 @@
 
 namespace Tests\FacadeTests;
 
-use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
+use Helldar\BlacklistCore\Exceptions\UnknownValueException;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -28,14 +28,16 @@ class StoreTest extends TestCase
 
     public function testFailValidationException()
     {
-        $this->expectException(ArgumentCountError::class);
+        $this->expectException(ClientException::class);
+        $this->expectExceptionCode(400);
 
         Client::store($this->get('first', 'email'));
     }
 
     public function testFailEmptySource()
     {
-        $this->expectException(ClientException::class);
+        $this->expectException(UnknownValueException::class);
+        $this->expectExceptionMessage('The value field is required.');
         $this->expectExceptionCode(400);
 
         Client::store('', '');

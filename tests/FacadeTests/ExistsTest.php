@@ -2,7 +2,6 @@
 
 namespace Tests\FacadeTests;
 
-use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
 use Tests\TestCase;
@@ -29,13 +28,6 @@ class ExistsTest extends TestCase
         $result = Client::exists($this->get('second', 'email'));
 
         $this->assertEquals(false, $result);
-    }
-
-    public function testArgumentCountError()
-    {
-        $this->expectException(ArgumentCountError::class);
-
-        Client::exists();
     }
 
     public function testEmptySource()
