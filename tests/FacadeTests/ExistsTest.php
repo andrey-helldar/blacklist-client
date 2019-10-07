@@ -1,39 +1,32 @@
 <?php
 
-namespace Tests\RemoteTests;
+namespace Tests\FacadeTests;
 
 use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
-use Helldar\BlacklistCore\Constants\Server;
 use Tests\TestCase;
 use TypeError;
 
 class ExistsTest extends TestCase
 {
-    protected $exists = 'foo@example.com';
-
-    protected $incorrect = 'foo';
-
-    protected $not_exists = 'bar@example.com';
-
-    protected $url = Server::URI . '/exists';
-
     public function testSuccessExists()
     {
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(423);
 
-        Client::store($this->exists, 'email');
+        $email = $this->get('first', 'email');
 
-        Client::exists($this->exists);
+        Client::store($email, 'email');
+
+        Client::exists($email);
     }
 
     public function testSuccessNotExists()
     {
-        Client::store($this->exists, 'email');
+        Client::store($this->get('first', 'email'), 'email');
 
-        $result = Client::exists($this->not_exists);
+        $result = Client::exists($this->get('second', 'email'));
 
         $this->assertEquals(false, $result);
     }

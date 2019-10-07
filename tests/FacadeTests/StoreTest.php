@@ -1,28 +1,21 @@
 <?php
 
-namespace Tests\RemoteTests;
+namespace Tests\FacadeTests;
 
 use ArgumentCountError;
 use GuzzleHttp\Exception\ClientException;
 use Helldar\BlacklistClient\Facades\Client;
-use Helldar\BlacklistCore\Constants\Server;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
-    protected $exists = 'foo@example.com';
-
-    protected $incorrect = 'foo';
-
-    protected $not_exists = 'bar@example.com';
-
-    protected $url = Server::URI;
-
     public function testSuccess()
     {
-        $item = Client::store($this->exists, 'email');
+        $email = $this->get('first', 'email');
 
-        $this->assertEquals($this->exists, $item->value);
+        $item = Client::store($email, 'email');
+
+        $this->assertEquals($email, $item->value);
     }
 
     public function testArgumentCountError()
@@ -30,14 +23,14 @@ class StoreTest extends TestCase
         $this->expectException(ClientException::class);
         $this->expectExceptionCode(400);
 
-        Client::store($this->exists, 'foo');
+        Client::store($this->get('first', 'email'), 'foo');
     }
 
     public function testFailValidationException()
     {
         $this->expectException(ArgumentCountError::class);
 
-        Client::store($this->exists);
+        Client::store($this->get('first', 'email'));
     }
 
     public function testFailEmptySource()

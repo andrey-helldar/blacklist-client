@@ -2,23 +2,18 @@
 
 namespace Helldar\BlacklistClient\Facades;
 
-use Helldar\BlacklistClient\Services\LocalService;
-use Helldar\BlacklistClient\Services\RemoteService;
-use Illuminate\Support\Facades\Facade;
-
-use function config;
+use Helldar\BlacklistClient\Services\ClientService;
+use Helldar\BlacklistCore\Facades\Facade;
 
 /**
  * @method array|string store(string $value, string $type)
- * @method void check(string $value)
- * @method bool exists(string $value)
+ * @method void check(string $value, string $type = null)
+ * @method bool exists(string $value, string $type = null)
  */
 class Client extends Facade
 {
-    protected static function getFacadeAccessor()
+    public static function getFacadeAccessor()
     {
-        return config('blacklist_client.server_url') === 'local'
-            ? LocalService::class
-            : RemoteService::class;
+        return ClientService::class;
     }
 }
