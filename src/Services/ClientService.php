@@ -6,7 +6,6 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Helldar\BlacklistClient\Facades\Config;
 use Helldar\BlacklistClient\Facades\Validation;
-use Helldar\BlacklistCore\Constants\Server;
 use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
