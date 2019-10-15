@@ -23,6 +23,14 @@ class CheckTest extends TestCase
         Client::check($email);
     }
 
+    public function testSelfBlocking()
+    {
+        $this->expectException(ClientException::class);
+        $this->expectExceptionCode(422);
+
+        Client::check('http://localhost', 'url');
+    }
+
     public function testSuccessNotExists()
     {
         Client::store($this->get('first', 'email'), 'email');

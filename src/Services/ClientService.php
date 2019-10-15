@@ -6,7 +6,6 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Helldar\BlacklistClient\Facades\Config;
 use Helldar\BlacklistClient\Facades\Validation;
-use Helldar\BlacklistCore\Constants\Server;
 use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
@@ -109,7 +108,7 @@ class ClientService implements ServiceContract
      */
     private function send(string $method, array $data, string $url_suffix = null): array
     {
-        $base_uri = Config::get('server_url') ?: Server::BASE_URL;
+        $base_uri = Config::get('server_url');
         $timeout  = Config::get('server_timeout') ?: 0;
         $verify   = Config::get('verify_ssl') ?: false;
         $headers  = Config::get('headers') ?: [];
