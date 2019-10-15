@@ -17,10 +17,6 @@ return [
 
     /*
      * If you specify "local" in the value, then requests will be processed by the local server.
-     *
-     * Set "null" to use our server.
-     *
-     * Default, null
      */
 
     'server_url' => env('BLACKLIST_SERVER_URL'),
