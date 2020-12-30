@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
      * Enabling and disabling the use of the package.
      *
@@ -54,5 +53,4 @@ return [
      */
 
     'except' => [],
-
 ];
