@@ -27,7 +27,7 @@ class ExistsTest extends TestCase
 
         $result = Client::exists($this->get('second', 'email'));
 
-        $this->assertEquals(false, $result);
+        $this->assertFalse($result);
     }
 
     public function testEmptySource()

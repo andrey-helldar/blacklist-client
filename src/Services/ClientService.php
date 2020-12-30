@@ -2,6 +2,7 @@
 
 namespace Helldar\BlacklistClient\Services;
 
+use function compact;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Helldar\BlacklistClient\Facades\Config;
@@ -10,9 +11,8 @@ use Helldar\BlacklistCore\Contracts\ServiceContract;
 use Helldar\BlacklistCore\Exceptions\BlacklistDetectedException;
 use Helldar\BlacklistCore\Facades\HttpClient;
 use Helldar\BlacklistCore\Helpers\Arr;
-use Psr\Http\Message\ResponseInterface;
 
-use function compact;
+use Psr\Http\Message\ResponseInterface;
 
 class ClientService implements ServiceContract
 {

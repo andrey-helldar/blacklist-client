@@ -37,7 +37,7 @@ class CheckTest extends TestCase
 
         Client::check($this->get('second', 'email'));
 
-        $this->assertEquals(true, true);
+        $this->assertTrue(true);
     }
 
     public function testArgumentCountError()
